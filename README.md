@@ -1,1 +1,1 @@
-# repo-gui
+# javascript_basics
