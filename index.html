@@ -42,27 +42,42 @@
         /**
          * 3. Найти все элементы на странице с классом "card-link", которые лежат в элементе с классом "card-body" и вывести полученную коллекцию в консоль.
          */
+        const cardBodyList = document.querySelectorAll(".card-body>.card-link");
+        console.log(cardBodyList);
 
         /**
          * 4. Найти первый попавшийся элемент на странице у которого есть атрибут data-number со значением 50 и вывести его в консоль.
          */
-
+        const dataNumberAtr = document.querySelector("[data-number='50']");
+        console.log(dataNumberAtr);
 
         /**
          * 5. Выведите содержимое тега title в консоль.
         */
+        const titleContent = document.querySelector("title");
+        console.log(titleContent.textContent);
 
         /**
          * 6. Получите элемент с классом "card-title" и выведите его родительский узел в консоль. 
          */
+        const cardTitle = document.querySelector(".card-title");
+        console.log(cardTitle.parentElement);
 
         /**
-         * 7. Создайте тегp`, запишите внутри него текст "Привет" и добавьте созданный тег в начало элемента, который имеет класс "card". 
+         * 7. Создайте тег p, запишите внутри него текст "Привет" и добавьте созданный тег в начало элемента, который имеет класс "card". 
          */
+        const paragraph = document.createElement("p");
+        paragraph.textContent = "Привет";
+
+        const cardElem = document.querySelector(".card");
+        cardElem.prepend(paragraph);
 
         /**
          * 8. Удалите тег h6 на странице.
          */
+        const heading = document.querySelector("h6");
+        heading.remove();
+
     </script>
 </body>
 

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <a href="#" class="link">link text html</a>
+
+    <img src="" alt="" class="photo">
+
+    <script>
+        // 1
+        const textLink = document.querySelector(".link");
+        textLink.textContent = "link text js";
+        textLink.href = "https://developer.mozilla.org/ru/";
+
+        // 2
+        const photo = document.querySelector(".photo");
+        photo.src = "https://mobimg.b-cdn.net/v3/fetch/a8/a84bf62b996f2d3e518458deb0f74bf8.jpeg";
+        photo.width = "600";
+
+    </script>
+</body>
+
+</html>
