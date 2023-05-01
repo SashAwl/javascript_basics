@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="content">
+
+    </div>
+
+    <script>
+
+        const button1 = document.createElement("button");
+        button1.textContent = "Отправить";
+
+        const divContent = document.querySelector(".content");
+        divContent.append(button1);
+
+        button1.onclick = () => button1.textContent = "Текст отправлен";
+
+        const button2 = document.createElement("button");
+        button2.textContent = "Узнать условия акции";
+
+        divContent.append(button2);
+
+        const counter = function () {
+            let countClick = 0;
+            return function () {
+                console.log(++countClick);
+                return countClick;
+            }
+        }
+
+        const action = function () {
+            let isDetails = false;
+            const actionDetailsP = document.createElement("p");
+            actionDetailsP.textContent = "В данной акции могут принять участие лица страше 18 лет, являющиеся членами нашего клуба";
+
+            return function () {
+                if (!isDetails) {
+                    button2.after(actionDetailsP);
+                } else {
+                    actionDetailsP.remove();
+                }
+                isDetails = !isDetails;
+            }
+
+        }
+        button2.onclick = action();
+
+    </script>
+
+</body>
+
+</html>
