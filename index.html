@@ -67,11 +67,7 @@
         */
         window.addEventListener("click", function (e) {
             const targetElem = e.target;
-            if (targetElem.classList.contains("super_element")) {
-                console.log(`Класс 'super_element' присутствует в элементе ${targetElem.localName}`);
-            } else {
-                console.log(`Класс 'super_element' не присутствует в элементе ${targetElem.localName}`);
-            }
+            console.log(`Класс 'super_element' ${targetElem.classList.contains("super_element") ? "при" : "от"}сутствует в элементе ${targetElem.localName}`);
         })
 
         /**
