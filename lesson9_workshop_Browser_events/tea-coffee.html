@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tea-coffee</title>
+</head>
+
+<body>
+    <form action="#">
+        <div class="selectForm">
+            <input type="radio" name="drinks" id="chooseTea" value="Чай">
+            <label for="chooseTea" class="labelTea">Чай</label>
+
+            <input type="radio" name="drinks" id="chooseCoffee" value="Кофе">
+            <label for="chooseCoffee" class="labelCoffee">Кофе</label>
+        </div>
+        <br>
+
+        <button type="submit" class="submit">Отправить</button>
+    </form>
+
+    <script>
+        const btnSubmit = document.querySelector(".submit");
+
+        btnSubmit.addEventListener("click", function (e) {
+
+            const radioBtn = document.querySelector("[name = 'drinks']:checked");
+            const selectDrink = document.querySelector(".selectForm");
+
+            const pWarning = document.createElement("p");
+            selectDrink.after(pWarning);
+            pWarning.textContent = radioBtn ? `${radioBtn.value} закончился` : "Вы не выбрали напиток";
+
+            e.preventDefault();
+        })
+    </script>
+</body>
+
+</html>

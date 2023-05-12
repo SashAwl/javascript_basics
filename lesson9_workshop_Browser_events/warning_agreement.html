@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warning</title>
+</head>
+
+<body>
+    <input type="checkbox" name="agreement" id="agree">
+    <label for="agree" class="labelCheck">Согласиться с условиями</label>
+
+    <br>
+
+    <button type="submit" class="submit">Отправить</button>
+
+    <script>
+        const checkAgree = document.querySelector("#agree");
+        const labelCheck = document.querySelector(".labelCheck");
+        const btnSubmit = document.querySelector(".submit");
+        let isWarning = false;
+
+        btnSubmit.addEventListener("click", function (e) {
+            if (!checkAgree.checked && !isWarning) {
+
+                const divWarning = document.createElement("div");
+                divWarning.className = "warning";
+                divWarning.textContent = "Необходимо согласиться с условиями";
+                divWarning.style.border = "1px solid red"
+                labelCheck.after(divWarning);
+
+                isWarning = true;
+                e.preventDefault();
+
+            } else if (checkAgree.checked && isWarning) {
+                const divWarning = document.querySelector(".warning");
+                divWarning.remove();
+
+                isWarning = false;
+                e.preventDefault();
+            }
+        })
+
+    </script>
+</body>
+
+</html>
