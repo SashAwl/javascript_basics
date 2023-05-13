@@ -76,6 +76,7 @@
         */
         const submitBtn = document.querySelector(".submit");
         const listForms = document.querySelectorAll(".form-control");
+        const mainForm = document.querySelector(".form");
 
         submitBtn.addEventListener("click", function (e) {
             [...listForms].forEach((item) => {
@@ -83,11 +84,22 @@
                     item.classList.add("error");
                     item.style.border = "1px solid red"
                     e.preventDefault();
-                } else {
-                    item.style.border = null;
                 }
             })
         })
+
+        mainForm.addEventListener("input", function (e) {
+            const target = e.target;
+
+            if (!target.value) {
+                target.classList.add("error");
+                target.style.border = "1px solid red"
+            } else {
+                target.style.border = null;
+                target.classList.remove("error");
+            }
+        });
+
     </script>
 </body>
 
