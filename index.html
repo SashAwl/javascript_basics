@@ -78,11 +78,15 @@
         const listForms = document.querySelectorAll(".form-control");
 
         submitBtn.addEventListener("click", function (e) {
-            ([...listForms]).forEach(item => console.log(listForms[i].value))
-            //const listForms = document.querySelectorAll(".form-control");
-            // for (let i = 0; i < listForms.length; i++) {
-            //     console.log(listForms[i].value)
-            // }
+            [...listForms].forEach((item) => {
+                if (!item.value) {
+                    item.classList.add("error");
+                    item.style.border = "1px solid red"
+                    e.preventDefault();
+                } else {
+                    item.style.border = null;
+                }
+            })
         })
     </script>
 </body>
