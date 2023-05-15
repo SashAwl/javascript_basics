@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework10</title>
+    <style>
+        .beerBox {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .itemBeer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 10px;
+            box-shadow: 5px 20px 50px rgba(16, 112, 177, 0.2);
+            border-radius: 10px;
+        }
+
+        .linkBeer {
+            text-decoration: none;
+            cursor: pointer;
+            color: black;
+            font-size: large;
+        }
+
+        .imgBeer {
+            height: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="data.js"></script>
+    <script>
+        const data = JSON.parse(dataInfo);
+
+        const beerRecipesBox = document.createElement("div");
+        beerRecipesBox.className = "beerBox";
+
+        const body = document.querySelector("body");
+        body.append(beerRecipesBox);
+
+        data.forEach(item => {
+            const itemBeer = document.createElement("div");
+            itemBeer.className = "itemBeer";
+
+            const linkBeerRecipes = document.createElement("a");
+            linkBeerRecipes.className = "linkBeer";
+            linkBeerRecipes.setAttribute("href", "#");
+
+            const nameBeer = document.createElement("h2");
+            nameBeer.textContent = item.name;
+            nameBeer.className = "nameBeer";
+            linkBeerRecipes.append(nameBeer);
+            itemBeer.append(linkBeerRecipes);
+
+            const imgBeer = document.createElement("img");
+            imgBeer.setAttribute("src", item.image_url);
+            imgBeer.setAttribute("alt", item.tagline);
+            imgBeer.className = "imgBeer";
+            itemBeer.append(imgBeer);
+
+            const descBeer = document.createElement("p");
+            descBeer.textContent = item.description;
+            descBeer.className = "descBeer";
+            itemBeer.append(descBeer);
+
+            beerRecipesBox.append(itemBeer);
+        });
+
+    </script>
+</body>
+
+</html>
