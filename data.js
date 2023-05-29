@@ -7,8 +7,7 @@ const dataProducts =
         "img": "image/image_index/card1.jpg",
         "price": 30,
         "color": "Dark blue",
-        "size": "XL",
-        "quentity": 1
+        "size": "XL"
     },
     {   "id": 2,
         "name": "SELA WOMEN BLAZER",
@@ -16,8 +15,7 @@ const dataProducts =
         "img": "image/image_index/card2.jpg",
         "price": 150,
         "color": "Black",
-        "size": "XXL",
-        "quentity": 1
+        "size": "XXL"
     },
     {   "id": 3,
         "name": "H&M TEENAGERS SHIRTS",
@@ -25,8 +23,7 @@ const dataProducts =
         "img": "image/image_index/card3.jpg",
         "price": 60,
         "color": "Black, Blue",
-        "size": "XS",
-        "quentity": 1
+        "size": "XS"
     },
     {   "id": 4,
         "name": "ZARA MEN T-SHIRT",
@@ -34,8 +31,7 @@ const dataProducts =
         "img": "image/image_index/card4.jpg",
         "price": 78,
         "color": "Blue",
-        "size": "L",
-        "quentity": 1
+        "size": "L"
     },
     {   "id": 5,
         "name": "ZARA WOMEN BLAZER",
@@ -43,8 +39,7 @@ const dataProducts =
         "img": "image/image_index/card5.jpg",
         "price": 90,
         "color": "Light blue",
-        "size": "M",
-        "quentity": 1
+        "size": "M"
     },
     {   "id": 6,
         "name": "ZOLLA BLOUSE",
@@ -52,7 +47,6 @@ const dataProducts =
         "img": "image/image_index/card6.jpg",
         "price": 110,
         "color": "Grey",
-        "size": "S",
-        "quentity": 1
+        "size": "S"
     }
 ]`
