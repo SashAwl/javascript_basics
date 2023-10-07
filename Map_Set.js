@@ -31,7 +31,7 @@ clients.set('Алексей', orderAleks)
 console.log(Array.from(clients.keys()))
 
 function defGender(name) {
-    if ('аоуэиеяю'.includes(name.slice(-1))) {
+    if (name[name.slice(-1)] == 'а' || name[name.slice(-1)]=='я') {
         return 'а'
     } else {
         return ''
