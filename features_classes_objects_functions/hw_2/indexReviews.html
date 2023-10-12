@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews</title>
+    <style>
+        .block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin: 10px auto;
+            width: 70%;
+            gap: 10px;
+        }
+
+        .item_review {
+            border-bottom: 1px dashed grey;
+        }
+
+        .product_item {
+            padding: 0 32px 20px;
+        }
+
+        .form_review {
+            border-left: 1px solid grey;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="block">
+        <h3>Оставьте свой отзыв</h3>
+        <form action="#">
+            <select name="product">
+                <option>Выберите продукт из списка</option>
+            </select>
+            <textarea name="review" cols="30" rows="5"
+                placeholder="Введите свой отзыв. Текст должен занимать от 50 до 500 символов"></textarea>
+            <button class="send" type="submit">Отправить</button>
+        </form>
+        <div class="reviewForm">
+        </div>
+    </div>
+
+    <script>
+        const reviewList = [
+            {
+                product: "Apple iPhone 13",
+                reviews: [
+                    {
+                        id: "1",
+                        text: "Отличный телефон! Батарея держится долго.",
+                    },
+                    {
+                        id: "2",
+                        text: "Камера супер, фото выглядят просто потрясающе.",
+                    },
+                ],
+            },
+            {
+                product: "Samsung Galaxy Z Fold 3",
+                reviews: [
+                    {
+                        id: "3",
+                        text: "Интересный дизайн, но дорогой.",
+                    },
+                ],
+            },
+            {
+                product: "Sony PlayStation 5",
+                reviews: [
+                    {
+                        id: "4",
+                        text: "Люблю играть на PS5, графика на высоте.",
+                    },
+                ],
+            },
+        ];
+
+        const formRun = document.querySelector(".block");
+        const reviewForm = document.querySelector(".reviewForm");
+        const listProduct = document.querySelector("select");
+
+        function readReview() {
+            reviewList.forEach((itemProduct, index) => {
+                const option = document.createElement("option"); // создаем список для выбора продукта
+                option.textContent = itemProduct.product;
+                listProduct.append(option);
+
+                const productItem = document.createElement("div"); // блок отзывов для одного продукта
+                productItem.className = "product_item";
+                productItem.classList.add(`product_${index}`)
+
+                const headingProduct = document.createElement("h3");  // название продукта
+                headingProduct.textContent = itemProduct.product;
+                headingProduct.className = "heading_product";
+
+                const formReviewProduct = document.createElement("div"); // поле с отзывами этого продукта
+                formReviewProduct.className = "form_review"
+                itemProduct.reviews.forEach((itemReview) => {
+                    const itemReviewProduct = document.createElement("p");
+                    itemReviewProduct.textContent = itemReview.text;
+                    itemReviewProduct.className = "item_review";
+                    formReviewProduct.append(itemReviewProduct);
+                })
+
+                productItem.append(headingProduct);
+                productItem.append(formReviewProduct);
+                reviewForm.append(productItem);
+            })
+        }
+        window.onload = readReview();
+
+        formRun.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const textReview = document.querySelector("textarea");
+            const selectedProduct = document.querySelector("select");
+
+            reviewList.forEach((item, index) => {
+                if (item.product === selectedProduct.value) {  // ищем выбранный продукт
+                    item.reviews.push({ id: item.reviews.length + 1, text: textReview.value }); // в его массив добавляем отзыв
+                    console.log(item.product, selectedProduct.value)
+                    const selectedProductForm = document.querySelector(`.product_${index}>.form_review`); // ищем блок с отзывами выбранного продукта
+                    const itemReviewProduct = document.createElement("p"); // создаем html-элемент с новым отзывом
+                    itemReviewProduct.textContent = textReview.value;
+                    itemReviewProduct.className = "item_review";
+                    selectedProductForm.append(itemReviewProduct);
+                }
+            })
+            textReview.value = "";
+        })
+
+
+
+    </script>
+</body>
+
+</html>
