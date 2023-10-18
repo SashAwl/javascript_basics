@@ -42,6 +42,7 @@
             <select name="product">
                 <option>Выберите продукт из списка</option>
             </select>
+            <input type="text" placeholder="Введите название товара">
             <textarea name="review" cols="30" rows="5"
                 placeholder="Введите свой отзыв. Текст должен занимать от 50 до 500 символов"></textarea>
             <button class="send" type="submit">Отправить</button>
@@ -88,6 +89,11 @@
         const formRun = document.querySelector(".block");
         const reviewForm = document.querySelector(".reviewForm");
         const listProduct = document.querySelector("select");
+        const textReview = document.querySelector("textarea");
+
+        const inputProduct = document.querySelector("input");
+        inputProduct.style.marginBottom = "-30px";
+        inputProduct.style.visibility = "hidden";
 
         function readReview() {
             reviewList.forEach((itemProduct, index) => {
@@ -116,26 +122,74 @@
                 productItem.append(formReviewProduct);
                 reviewForm.append(productItem);
             })
+            const option = document.createElement("option"); // добавляем в список для для выбора продукта вариант "Другой"
+            option.textContent = "Другой";
+            listProduct.append(option);
+
         }
 
         window.onload = readReview();
 
+        listProduct.addEventListener("change", (event) => {  // добавляем поле для ввода, если нужного товара не оказалось в списке
+            if (event.target.value === 'Другой') {
+                inputProduct.style.visibility = "visible";
+                inputProduct.style.marginBottom = "0px";
+            } else {
+                inputProduct.style.marginBottom = "-30px";
+                inputProduct.style.visibility = "hidden";
+            }
+        })
+
         formRun.addEventListener('submit', (event) => {
             event.preventDefault();
-            const textReview = document.querySelector("textarea");
-            const selectedProduct = document.querySelector("select");
+            try {
+                if (listProduct.value === "Другой") {
+                    const newProduct = inputProduct.value.trim();
+                    if (newProduct !== "") {
+                        reviewList.push({ product: newProduct, reviews: [{ id: 1, text: textReview.value }] }); // добавляем объект с новым продуктом и его первым отзывом
+                        console.log(reviewList);
+                        const option = document.createElement("option"); // создаем элемент списка для выбора продукта
+                        option.textContent = newProduct;
+                        listProduct.append(option);
 
-            reviewList.forEach((item, index) => {
-                if (item.product === selectedProduct.value) {  // ищем выбранный продукт
-                    item.reviews.push({ id: item.reviews.length + 1, text: textReview.value }); // в его массив добавляем отзыв
-                    console.log(item.product, selectedProduct.value)
-                    const selectedProductForm = document.querySelector(`.product_${index}>.form_review`); // ищем блок с отзывами выбранного продукта
-                    const itemReviewProduct = document.createElement("p"); // создаем html-элемент с новым отзывом
-                    itemReviewProduct.textContent = textReview.value;
-                    itemReviewProduct.className = "item_review";
-                    selectedProductForm.append(itemReviewProduct);
+                        const productItem = document.createElement("div"); // блок отзывов для одного продукта
+                        productItem.className = "product_item";
+                        productItem.classList.add(`product_${reviewList.length - 1}`)
+
+                        const headingProduct = document.createElement("h3");  // название продукта
+                        headingProduct.textContent = newProduct;
+                        headingProduct.className = "heading_product";
+
+                        const formReviewProduct = document.createElement("div"); // поле с отзывами этого продукта
+                        formReviewProduct.className = "form_review"
+
+                        const itemReviewProduct = document.createElement("p"); // первый отзыв
+                        itemReviewProduct.textContent = textReview.value;
+                        itemReviewProduct.className = "item_review";
+                        formReviewProduct.append(itemReviewProduct);
+
+                        productItem.append(headingProduct);
+                        productItem.append(formReviewProduct);
+                        reviewForm.append(productItem);
+                    } else {
+                        throw new Error("Укажите название продукта!")
+                    }
+                } else {
+                    reviewList.forEach((item, index) => {
+                        if (item.product === listProduct.value) {  // ищем выбранный продукт
+                            item.reviews.push({ id: item.reviews.length + 1, text: textReview.value }); // в его массив добавляем отзыв
+                            const selectedProductForm = document.querySelector(`.product_${index}>.form_review`); // ищем блок с отзывами выбранного продукта
+                            const itemReviewProduct = document.createElement("p"); // создаем html-элемент с новым отзывом
+                            itemReviewProduct.textContent = textReview.value;
+                            itemReviewProduct.className = "item_review";
+                            selectedProductForm.append(itemReviewProduct);
+                        }
+                    })
                 }
-            })
+            } catch (error) {
+                console.log(error);
+            }
+            inputProduct.value = ""
             textReview.value = "";
         })
     </script>
