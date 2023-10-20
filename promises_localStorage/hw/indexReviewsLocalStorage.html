@@ -5,40 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reviews</title>
-    <style>
-        .block {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            margin: 10px auto;
-            width: 70%;
-            gap: 10px;
-        }
-
-        .item_review {
-            border-bottom: 1px dashed grey;
-        }
-
-        .product_item {
-            padding: 0 32px 20px;
-        }
-
-        .form_review {
-            border-left: 1px solid grey;
-            padding-left: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="styleReviewsLocalStorage.css">
 </head>
 
 <body>
     <div class="block">
-        <h3>Оставьте свой отзыв</h3>
-        <form action="#">
+        <h1 class="head_form">Оставьте свой отзыв</h1>
+        <form action="#" class="form">
             <select name="product">
                 <option>Выберите продукт из списка</option>
             </select>
@@ -51,6 +24,96 @@
     </div>
 
     <script>
+        localStorage.clear()
+        function showReview(event) {
+            reviewForm.innerHTML = "";
+            const productItem = document.createElement("div"); // блок отзывов для одного продукта
+            productItem.className = "product_item";
+
+            const headingProduct = document.createElement("h3");  // название продукта
+            headingProduct.textContent = event;
+            headingProduct.className = "heading_product";
+            productItem.append(headingProduct);
+
+            const formReviewProduct = document.createElement("div"); // поле с отзывами этого продукта
+            formReviewProduct.className = "form_review"
+
+            const reviewListLS = JSON.parse(localStorage.getItem(event));  // выгружаем список отзывов по выбранному товару
+            reviewListLS.forEach((item, index) => {
+                const fieldItemReviewProduct = document.createElement("div"); // создаем поле с отзывом и кнопкой удаления
+                fieldItemReviewProduct.className = "field_item_product";
+
+                const itemReviewProduct = document.createElement("p"); // сам отзыв
+                itemReviewProduct.textContent = item.review;
+                itemReviewProduct.className = "item_review";
+                fieldItemReviewProduct.append(itemReviewProduct);
+
+                btnRemoveReview = document.createElement("button");
+                btnRemoveReview.className = "btn_remove";
+                btnRemoveReview.textContent = "x";
+                fieldItemReviewProduct.append(btnRemoveReview);
+
+                btnRemoveReview.addEventListener("click", (event) => {
+                    let isRemove = true;
+                    let time = 5;
+                    const deletedReview = event.target.parentNode; // удаляемая строка HTML
+                    [...deletedReview.children].forEach(item => item.style.display = "none");
+                    const returnReview = document.createElement("div"); // создаем кнопку для отмены удаления отзыва
+                    returnReview.className = "returnForm";
+                    const returnReviewText = document.createElement("p");
+                    returnReviewText.className = "returnText";
+                    returnReviewText.classList.add("item_review");
+                    returnReviewText.textContent = "Вернуть отзыв";
+                    const timer = document.createElement("span");
+                    timer.style.marginLeft = "20px";
+                    returnReview.append(returnReviewText);
+                    returnReview.append(timer);
+                    deletedReview.append(returnReview);
+
+                    returnReviewText.addEventListener("click", () => {
+                        isRemove = false;
+                        time = 1;
+                        returnReview.remove();
+                        [...deletedReview.children].forEach(item => {
+                            item.style.display = "block"
+                        });
+                    })
+
+                    const deletedReviewLS = event.target.parentNode.parentNode.parentNode;
+                    const keyDeletedReview = deletedReviewLS.querySelector(".heading_product").textContent; // определяем название продукта
+                    const listReviewProductAll = JSON.parse(localStorage.getItem(keyDeletedReview));
+                    const deletedReviewText = deletedReview.querySelector(".item_review").textContent;  //  текст удаляемого отзыва
+
+                    listReviewProductAll.forEach((item, index) => { // список без удаляемого отзыва
+                        if (item.review === deletedReviewText) {
+                            listReviewProductAll.splice(index, 1);
+                        }
+                    })
+                    let timerId = setInterval(() => {  // обратный отсчет до удаления из Local Storage
+                        timer.textContent = time;
+                        time -= 1
+                    }, 1000);
+                    setTimeout(() => {  // по истечении time данные об отзыве будут удалены из хранилища
+                        clearInterval(timerId);
+                        if (isRemove) {
+                            localStorage.setItem(keyDeletedReview, JSON.stringify(listReviewProductAll));
+                            deletedReview.remove();
+                            if (!listReviewProductAll.length) {
+                                const notReview = document.createElement("p");
+                                notReview.textContent = "У этого товара пока нет отзывов. Будьте первым!";
+                                notReview.className = "item_review";
+                                formReviewProduct.append(notReview);
+                            }
+                        }
+                    }, (time + 1) * 1000)
+                })
+
+                formReviewProduct.append(fieldItemReviewProduct);
+            })
+            productItem.append(formReviewProduct);
+            reviewForm.append(productItem);
+        }
+
         const formRun = document.querySelector(".block");
         const reviewForm = document.querySelector(".reviewForm");
         const listProduct = document.querySelector("select");
@@ -60,9 +123,9 @@
         inputProduct.style.marginBottom = "-30px";
         inputProduct.style.visibility = "hidden";
 
-        localStorage.setItem("Apple iPhone 13", "Отличный телефон! Батарея держится долго.&&&Камера супер, фото выглядят просто потрясающе.");
-        localStorage.setItem("Samsung Galaxy Z Fold 3", "Интересный дизайн, но дорогой.");
-        localStorage.setItem("Sony PlayStation 5", "Люблю играть на PS5, графика на высоте.");
+        localStorage.setItem("Apple iPhone 13", JSON.stringify([{ id: 1, review: "Отличный телефон! Батарея держится долго." }, { id: 2, review: "Good" }]));
+        localStorage.setItem("Samsung Galaxy Z Fold 3", JSON.stringify([{ id: 1, review: "Интересный дизайн, но дорогой." }]));
+        localStorage.setItem("Sony PlayStation 5", JSON.stringify([{ id: 1, review: "Люблю играть на PS5, графика на высоте." }]));
 
         for (let i in localStorage) {
             if (localStorage.hasOwnProperty(i)) {
@@ -83,28 +146,7 @@
             } else {
                 inputProduct.style.marginBottom = "-30px";
                 inputProduct.style.visibility = "hidden";
-
-                reviewForm.innerHTML = "";
-                const productItem = document.createElement("div"); // блок отзывов для одного продукта
-                productItem.className = "product_item";
-
-                const headingProduct = document.createElement("h3");  // название продукта
-                headingProduct.textContent = event.target.value;
-                headingProduct.className = "heading_product";
-                productItem.append(headingProduct);
-
-                const formReviewProduct = document.createElement("div"); // поле с отзывами этого продукта
-                formReviewProduct.className = "form_review"
-
-                const reviewListLS = localStorage.getItem(event.target.value).split("&&&"); // выгружаем список отзывов по выбранному товару
-                reviewListLS.forEach((item, index) => {
-                    const itemReviewProduct = document.createElement("p"); // выводим все отзывы на страницу
-                    itemReviewProduct.textContent = item;
-                    itemReviewProduct.className = "item_review";
-                    formReviewProduct.append(itemReviewProduct);
-                })
-                productItem.append(formReviewProduct);
-                reviewForm.append(productItem);
+                showReview(event.target.value);
             }
         })
 
@@ -114,8 +156,6 @@
                 if (listProduct.value === "Другой") {
                     const newProduct = inputProduct.value.trim();
                     if (newProduct !== "") {
-                        localStorage.setItem(newProduct, textReview.value); // добавляем продукт и отзыв к нему в Local Storage
-
                         const option = document.createElement("option"); // создаем элемент списка для выбора продукта
                         option.textContent = newProduct;
                         listProduct.append(option);
@@ -124,42 +164,26 @@
                         inputProduct.style.visibility = "hidden";
                         inputProduct.style.marginBottom = "-30px";
 
-                        const productItem = document.createElement("div"); // блок отзывов для одного продукта
-                        productItem.className = "product_item";
-
-                        const headingProduct = document.createElement("h3");  // название продукта
-                        headingProduct.textContent = newProduct;
-                        headingProduct.className = "heading_product";
-
-                        const formReviewProduct = document.createElement("div"); // поле с отзывами этого продукта
-                        formReviewProduct.className = "form_review"
-
-                        const itemReviewProduct = document.createElement("p"); // заполняем поле с отзывами
-                        itemReviewProduct.textContent = textReview.value.trim() !== ""
-                            ? textReview.value.trim()
-                            : "Будьте первым, оставьте свой отзыв";
-                        itemReviewProduct.className = "item_review";
-                        formReviewProduct.append(itemReviewProduct);
-
-                        productItem.append(headingProduct);
-                        productItem.append(formReviewProduct);
-                        reviewForm.append(productItem);
+                        if (textReview.value !== "") {
+                            localStorage.setItem(newProduct, JSON.stringify([{ id: 1, review: textReview.value }])); // добавляем продукт и отзыв к нему в Local Storage
+                            showReview(newProduct);
+                        } else {
+                            throw new Error("Напишите хотя бы пару слов о продукте");
+                        }
                     } else {
                         throw new Error("Укажите название продукта!")
                     }
                 } else {
                     if (textReview.value !== "") {
-                        const selectedProductForm = document.querySelector(`.form_review`); // ищем блок с отзывами выбранного продукта
-                        if (localStorage.getItem(listProduct.value).length === 0) {
-                            selectedProductForm.innerHTML = "";
+                        const updatedReviewList = JSON.parse(localStorage.getItem(listProduct.value));
+                        console.log(updatedReviewList)
+                        if (updatedReviewList) {
+                            updatedReviewList.push({ id: updatedReviewList.length + 1, review: textReview.value });
+                            localStorage.setItem(listProduct.value, JSON.stringify(updatedReviewList)); // дополняем список отзывов в Local Storage новым
+                            showReview(listProduct.value);
+                        } else {
+                            localStorage.setItem(listProduct.value, JSON.stringify([{ id: 1, review: textReview.value }]))
                         }
-                        const itemReviewProduct = document.createElement("p"); // создаем html-элемент с новым отзывом
-                        itemReviewProduct.textContent = textReview.value;
-                        itemReviewProduct.className = "item_review";
-                        selectedProductForm.append(itemReviewProduct);
-
-                        const updatedReviewList = localStorage.getItem(listProduct.value) + "&&&" + textReview.value;
-                        localStorage.setItem(listProduct.value, updatedReviewList);
                     } else {
                         throw new Error("Напишите хотя бы пару слов о продукте")
                     }
@@ -170,6 +194,9 @@
             inputProduct.value = ""
             textReview.value = "";
         })
+
+        const btnRemove = document.querySelector(".btn_remove");
+
     </script>
 </body>
 

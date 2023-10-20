@@ -1,0 +1,90 @@
+.block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+    width: 70%;
+    gap: 10px;
+    border-radius: 20px;
+    background-color: #F4F0EC;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.head_form {
+    color: #CDA274;
+}
+
+select,
+input,
+textarea {
+    border-color: rgb(185, 178, 178);
+    border-radius: 10px;
+    font-size: 17px;
+
+}
+
+.send {
+    border: none;
+    border-radius: 10px;
+    width: min-content;
+    background-color: #CDA274;
+    padding: 10px 20px;
+    color: #F4F0EC;
+    font-size: large;
+}
+
+.reviewForm {
+    width: 70%;
+}
+
+.item_review {
+    border-bottom: 1px dashed grey;
+    font-size: larger;
+}
+
+.product_item {
+    padding: 0 40px 20px;
+}
+
+.form_review {
+    border-left: 1px solid #CDA274;
+    padding-left: 10px;
+    font-size: large;
+}
+
+.field_item_product {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn_remove {
+    background-color: rgb(237 111 111);
+    border-radius: 10px;
+    border: none;
+    height: min-content;
+    color: white;
+    cursor: pointer;
+}
+
+.returnForm {
+    display: flex;
+    align-items: center;
+    font-size: larger;
+}
+
+.returnText {
+    cursor: pointer;
+    font-size: large;
+    text-decoration: underline;
+}
+
+.returnForm span {
+    font-weight: bold;
+}
