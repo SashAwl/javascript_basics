@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card listProduct</title>
+    <style>
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .card-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card {
+            margin: 0;
+            padding: 20px 50px;
+            background-color: bisque;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card-box">
+        <p class="card">1</p>
+        <p class="card">2</p>
+        <p class="card">3</p>
+    </div>
+    <div class="buttons">
+        <button class="add">Add</button>
+        <button class="clone">Clone</button>
+        <button class="remove">Remove</button>
+    </div>
+
+    <script>
+        const cardBox = document.querySelector(".card-box");
+        const btnAdd = document.querySelector(".add");
+
+        btnAdd.addEventListener("click", () => {
+            const newCard = document.createElement("p");
+            newCard.textContent = ++cardBox.children.length;
+            newCard.className = "card";
+            cardBox.append(newCard);
+        })
+
+        const btnRemove = document.querySelector(".remove");
+        btnRemove.addEventListener("click", () => {
+            cardBox.lastElementChild.remove();
+        })
+
+        const btnClone = document.querySelector(".clone");
+        btnClone.addEventListener("click", () => {
+            cardBox.append(cardBox.lastElementChild.cloneNode(true));
+        })
+    </script>
+</body>
+
+</html>

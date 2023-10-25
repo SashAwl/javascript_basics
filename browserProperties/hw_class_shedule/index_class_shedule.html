@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+    </style>
+    <title>Shedule</title>
+</head>
+
+<body>
+    <p class="h1 text-center m-5">Расписание занятий</p>
+    <div class="container text-center">
+        <div class="row g-5 card-box">
+        </div>
+    </div>
+
+    <script src="JSON.js"></script>
+    <script>
+        const data = JSON.parse(dataInfo);
+        console.log(data);
+
+        const cardBox = document.querySelector(".card-box");
+        data.forEach((item) => {
+            const cardSection = document.createElement("div"); // создаем блоки для сетки Bootstrap и контент
+            cardSection.className = "col-md-3";
+
+            const card = document.createElement("div");
+            card.className = "card";
+            card.style.width = "18rem";
+
+            const img = document.createElement('img');
+            img.setAttribute("src", `image/${item.img}.jpg`);
+            img.setAttribute("alt", item.jpg);
+            img.className = "card-img-top";
+            card.append(img);
+
+            const divCard = document.createElement("div");
+            divCard.className = "card-body";
+
+            const headCard = document.createElement("h5");
+            headCard.className = "card-title";
+            headCard.textContent = item.name;
+
+            const time = document.createElement("p");
+            time.className = "card-text";
+            time.textContent = `Начало занятия: ${item.time}`;
+
+            const availableSeats = document.createElement("p");
+            availableSeats.className = "card-text text-body-secondary mb-0";
+            availableSeats.textContent = `Всего мест: ${item.maxCountPerson}`;
+
+            const occupiedSeats = document.createElement("p");
+            occupiedSeats.className = "card-text text-body-secondary mt-1   ";
+            occupiedSeats.textContent = `Занято мест: ${item.currentCountPerson}`;
+
+            buttons = document.createElement("div");
+            buttons.className = "d-grid gap-2 mx-auto";
+
+            let isSignedUp = false;     // указывает, записывался ли данный пользователь
+            const buttonSignUp = document.createElement("button");
+            buttonSignUp.className = "btn btn-success";
+            buttonSignUp.textContent = "Записаться";
+            buttonSignUp.addEventListener("click", () => {
+                if (item.currentCountPerson < item.maxCountPerson && !isSignedUp) { // если есть свободные места и данный пользователь еще не записывался
+                    item.currentCountPerson += 1;
+                    occupiedSeats.textContent = `Занято мест: ${item.currentCountPerson}`;
+                    buttonSignUp.setAttribute("disabled", "disabled");  // кнопка записи для пользователя закрывается
+                    buttonCansel.removeAttribute("disabled");  // открывается возможность удааления своей записи
+                    isSignedUp = true;
+                }
+            })
+
+            const buttonCansel = document.createElement("button");
+            buttonCansel.className = "btn btn-success";
+            buttonCansel.textContent = "Отменить запись";
+            buttonCansel.setAttribute("disabled", "disabled");
+            buttonCansel.addEventListener("click", () => {
+                if (isSignedUp && item.currentCountPerson > 0) {  // пользователь может отменить только свою запись, поэтому отслеживаем, записывался ли он
+                    item.currentCountPerson -= 1;
+                    occupiedSeats.textContent = `Занято мест: ${item.currentCountPerson}`;
+                    buttonCansel.setAttribute("disabled", "disabled");
+                    buttonSignUp.removeAttribute("disabled");  // вновь становится доступной кнопка записи
+                }
+            })
+
+            if (item.currentCountPerson === item.maxCountPerson) {  // если на текущий момент уже все места заняты, обе кнопки недоступны для пользователя
+                buttonSignUp.setAttribute("disabled", "disabled");
+            }
+            buttons.append(buttonSignUp, buttonCansel);
+            divCard.append(headCard, time, availableSeats, occupiedSeats, buttons);
+            card.append(divCard);
+            cardSection.append(card);
+            cardBox.append(cardSection);
+
+        })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
