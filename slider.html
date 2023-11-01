@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider</title>
+    <style>
+        .block {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slider {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 70%;
+            height: 60%;
+            overflow: hidden;
+        }
+
+        .flip_slider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider_img {
+            width: 70%;
+            height: 70%;
+            overflow: hidden;
+        }
+
+        img {
+            width: 100%;
+            height: inherit;
+        }
+
+        svg {
+            width: 40px;
+            height: 20px;
+            padding: 10px;
+            background-color: rgb(233, 229, 229);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .pointItem {
+            background-color: grey;
+            cursor: pointer;
+        }
+
+        .nav-point {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .no_active {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="block">
+        <h1>Yoga is life</h1>
+        <div class="slider">
+            <div class="flip_slider">
+                <?xml version="1.0" encoding="UTF-8"?>
+                <svg class="arrow_previous" xmlns="http://www.w3.org/2000/svg" id="Bold" viewBox="0 0 24 24" width="512"
+                    height="512">
+                    <path
+                        d="M17.921,1.505a1.5,1.5,0,0,1-.44,1.06L9.809,10.237a2.5,2.5,0,0,0,0,3.536l7.662,7.662a1.5,1.5,0,0,1-2.121,2.121L7.688,15.9a5.506,5.506,0,0,1,0-7.779L15.36.444a1.5,1.5,0,0,1,2.561,1.061Z" />
+                </svg>
+                <div class="slider_img">
+                    <img class="active" src="./img_slider/1.jpg" alt="yoga_photo">
+                    <img class="no_active" src="./img_slider/2.jpg" alt="yoga_photo">
+                    <img class="no_active" src="./img_slider/3.jpg" alt="yoga_photo">
+                    <img class="no_active" src="./img_slider/4.jpg" alt="yoga_photo">
+                    <img class="no_active" src="./img_slider/5.jpg" alt="yoga_photo">
+                </div>
+                <?xml version="1.0" encoding="UTF-8"?>
+                <svg class="arrow_next" xmlns="http://www.w3.org/2000/svg" id="Bold" viewBox="0 0 24 24" width="512"
+                    height="512">
+                    <path
+                        d="M6.079,22.5a1.5,1.5,0,0,1,.44-1.06l7.672-7.672a2.5,2.5,0,0,0,0-3.536L6.529,2.565A1.5,1.5,0,0,1,8.65.444l7.662,7.661a5.506,5.506,0,0,1,0,7.779L8.64,23.556A1.5,1.5,0,0,1,6.079,22.5Z" />
+                </svg>
+            </div>
+            <form class="nav-point">
+                <input type="radio" name="toogle" value="0" class="pointItem" checked="checked">
+                <input type="radio" name="toogle" value="1" class="pointItem">
+                <input type="radio" name="toogle" value="2" class="pointItem">
+                <input type="radio" name="toogle" value="3" class="pointItem">
+                <input type="radio" name="toogle" value="4" class="pointItem">
+            </form>
+        </div>
+    </div>
+    <script>
+        const navPoint = document.querySelector(".nav-point");
+        const navPointItems = document.querySelectorAll("input");
+        const images = document.querySelectorAll("img");
+
+        navPoint.addEventListener("click", (event) => {        // управление слайдером с помощью переключателей
+            if (event.target.classList.contains("pointItem")) {
+                document.querySelector("[checked='checked']").removeAttribute("checked");
+                event.target.setAttribute("checked", "checked");
+
+                const activeImg = document.querySelector(".active");
+                activeImg.classList.replace("active", "no_active");
+                images[event.target.value].classList.replace("no_active", "active");
+            }
+        });
+
+        const arrows = document.querySelector(".flip_slider");
+        arrows.addEventListener("click", (event) => {       // управление слайдером с помощью стрелок
+            const activeImg = document.querySelector(".active");
+            const checkPoint = document.querySelector("[checked='checked']");
+            console.log(checkPoint)
+
+            if (event.target.classList.contains("arrow_previous")) {
+                activeImg.classList.replace("active", "no_active");
+                checkPoint.removeAttribute("checked");
+                if (activeImg.previousElementSibling) {
+                    activeImg.previousElementSibling.classList.replace("no_active", "active");
+                    checkPoint.previousElementSibling.setAttribute("checked", "checked");
+                    console.log(checkPoint.previousElementSibling)
+
+                } else {                // долистав до первой картинки переключиться на последнюю
+                    images[images.length - 1].classList.replace("no_active", "active");
+                    navPointItems[navPointItems.length - 1].setAttribute("checked", "checked");
+                    console.log(navPointItems[navPointItems.length - 1])
+                }
+            }
+
+            if (event.target.classList.contains("arrow_next")) {
+                activeImg.classList.replace("active", "no_active");
+                checkPoint.removeAttribute("checked");
+                if (activeImg.nextElementSibling) {
+                    activeImg.nextElementSibling.classList.replace("no_active", "active");
+                    checkPoint.nextElementSibling.setAttribute("checked", "checked");
+
+                } else {                // долистав до последней картинки переключиться на первую
+                    images[0].classList.replace("no_active", "active");
+                    navPointItems[0].setAttribute("checked", "checked");
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>
