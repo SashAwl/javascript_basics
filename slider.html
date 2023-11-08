@@ -80,7 +80,7 @@
                 <?xml version="1.0" encoding="UTF-8"?>
                 <svg class="arrow_previous" xmlns="http://www.w3.org/2000/svg" id="Bold" viewBox="0 0 24 24" width="512"
                     height="512">
-                    <path
+                    <path class="arrow_previous"
                         d="M17.921,1.505a1.5,1.5,0,0,1-.44,1.06L9.809,10.237a2.5,2.5,0,0,0,0,3.536l7.662,7.662a1.5,1.5,0,0,1-2.121,2.121L7.688,15.9a5.506,5.506,0,0,1,0-7.779L15.36.444a1.5,1.5,0,0,1,2.561,1.061Z" />
                 </svg>
                 <div class="slider_img">
@@ -93,12 +93,12 @@
                 <?xml version="1.0" encoding="UTF-8"?>
                 <svg class="arrow_next" xmlns="http://www.w3.org/2000/svg" id="Bold" viewBox="0 0 24 24" width="512"
                     height="512">
-                    <path
+                    <path class="arrow_next"
                         d="M6.079,22.5a1.5,1.5,0,0,1,.44-1.06l7.672-7.672a2.5,2.5,0,0,0,0-3.536L6.529,2.565A1.5,1.5,0,0,1,8.65.444l7.662,7.661a5.506,5.506,0,0,1,0,7.779L8.64,23.556A1.5,1.5,0,0,1,6.079,22.5Z" />
                 </svg>
             </div>
             <form class="nav-point">
-                <input type="radio" name="toogle" value="0" class="pointItem" checked="checked">
+                <input type="radio" name="toogle" value="0" class="pointItem" checked>
                 <input type="radio" name="toogle" value="1" class="pointItem">
                 <input type="radio" name="toogle" value="2" class="pointItem">
                 <input type="radio" name="toogle" value="3" class="pointItem">
@@ -113,8 +113,8 @@
 
         navPoint.addEventListener("click", (event) => {        // управление слайдером с помощью переключателей
             if (event.target.classList.contains("pointItem")) {
-                document.querySelector("[checked='checked']").removeAttribute("checked");
-                event.target.setAttribute("checked", "checked");
+                document.querySelector(".pointItem:checked").checked = false;
+                event.target.checked = true;
 
                 const activeImg = document.querySelector(".active");
                 activeImg.classList.replace("active", "no_active");
@@ -125,34 +125,32 @@
         const arrows = document.querySelector(".flip_slider");
         arrows.addEventListener("click", (event) => {       // управление слайдером с помощью стрелок
             const activeImg = document.querySelector(".active");
-            const checkPoint = document.querySelector("[checked='checked']");
-            console.log(checkPoint)
+            const checkPoint = document.querySelector(".pointItem:checked");
 
             if (event.target.classList.contains("arrow_previous")) {
                 activeImg.classList.replace("active", "no_active");
-                checkPoint.removeAttribute("checked");
+                checkPoint.checked = false;
+
                 if (activeImg.previousElementSibling) {
                     activeImg.previousElementSibling.classList.replace("no_active", "active");
-                    checkPoint.previousElementSibling.setAttribute("checked", "checked");
-                    console.log(checkPoint.previousElementSibling)
+                    checkPoint.previousElementSibling.checked = true;
 
                 } else {                // долистав до первой картинки переключиться на последнюю
                     images[images.length - 1].classList.replace("no_active", "active");
-                    navPointItems[navPointItems.length - 1].setAttribute("checked", "checked");
-                    console.log(navPointItems[navPointItems.length - 1])
+                    navPointItems[navPointItems.length - 1].checked = true;
                 }
             }
 
             if (event.target.classList.contains("arrow_next")) {
                 activeImg.classList.replace("active", "no_active");
-                checkPoint.removeAttribute("checked");
+                checkPoint.checked = false;
                 if (activeImg.nextElementSibling) {
                     activeImg.nextElementSibling.classList.replace("no_active", "active");
-                    checkPoint.nextElementSibling.setAttribute("checked", "checked");
+                    checkPoint.nextElementSibling.checked = true;
 
                 } else {                // долистав до последней картинки переключиться на первую
                     images[0].classList.replace("no_active", "active");
-                    navPointItems[0].setAttribute("checked", "checked");
+                    navPointItems[0].checked = true;
                 }
             }
         })
