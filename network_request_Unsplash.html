@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo of the day</title>
+</head>
+
+<body>
+    <div class="block">
+    </div>
+
+    <script>
+        function getData() {
+            fetch("https://api.unsplash.com/photos/random/?client_id=PrLMkK1NrtTB3Z3Q_M6pARgX7z2uarq9-wEWsn_YboM")
+                .then(response => response.json())
+                .then(data => console.log(data))
+        }
+        getData();
+
+        // function drowPage() {
+        //     const img = document.createElement("img");
+        //     img.src = ""
+        // }
+    </script>
+
+</body>
+
+</html>
