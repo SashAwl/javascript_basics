@@ -5,24 +5,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo of the day</title>
+    <style>
+        .block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .img-data {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .block h2 {
+            width: 70%;
+            text-align: center;
+        }
+
+        .block_img {
+            width: 500px;
+            max-height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .block_img img {
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .block_like {
+            position: absolute;
+            right: 10px;
+            top: 20px;
+        }
+
+        .like {
+            display: none;
+            width: 30px;
+        }
+
+        .like path {
+            fill: #F44336;
+        }
+
+        .not_like {
+            width: 30px;
+        }
+
+        .history {
+            text-decoration: none;
+            color: black;
+            width: 70%;
+            text-align: center;
+        }
+
+        .history-item {
+            text-align: left;
+        }
+    </style>
 </head>
 
 <body>
     <div class="block">
+        <div class="img-data">
+            <div class="block_img">
+                <div class="block_like">
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg class="not_like" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="512"
+                        height="512">
+                        <g id="_01_align_center" data-name="01 align center">
+                            <path
+                                d="M17.5.917a6.4,6.4,0,0,0-5.5,3.3A6.4,6.4,0,0,0,6.5.917,6.8,6.8,0,0,0,0,7.967c0,6.775,10.956,14.6,11.422,14.932l.578.409.578-.409C13.044,22.569,24,14.742,24,7.967A6.8,6.8,0,0,0,17.5.917ZM12,20.846c-3.253-2.43-10-8.4-10-12.879a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,7.967h2a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,7.967C22,12.448,15.253,18.416,12,20.846Z" />
+                        </g>
+                    </svg>
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg class="like" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1"
+                        viewBox="0 0 24 24" width="512" height="512">
+                        <path
+                            d="M17.5.917a6.4,6.4,0,0,0-5.5,3.3A6.4,6.4,0,0,0,6.5.917,6.8,6.8,0,0,0,0,7.967c0,6.775,10.956,14.6,11.422,14.932l.578.409.578-.409C13.044,22.569,24,14.742,24,7.967A6.8,6.8,0,0,0,17.5.917Z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="history">Смотреть историю</a>
     </div>
 
     <script>
-        function getData() {
-            fetch("https://api.unsplash.com/photos/random/?client_id=PrLMkK1NrtTB3Z3Q_M6pARgX7z2uarq9-wEWsn_YboM")
-                .then(response => response.json())
-                .then(data => console.log(data))
-        }
-        getData();
+        // localStorage.clear();
+        // console.log(localStorage);
 
-        // function drowPage() {
-        //     const img = document.createElement("img");
-        //     img.src = ""
-        // }
+        if (!localStorage.getItem("likeCounter")) {
+            localStorage.setItem("likeCounter", 0); // создаем счетчик понравившихся фото в LocalStorage)
+        }
+        if (!localStorage.getItem("likePhotoHistory")) {
+            localStorage.setItem("likePhotoHistory", "[]"); // создаем историю понравившихся фото в LocalStorage)
+        }
+        let isLiked = false;  // храним состояние, отмечена ли лайком данное фото
+
+        const block = document.querySelector(".block_img");
+        const imgData = document.querySelector(".img-data");
+
+        function getData() {
+            return fetch("https://api.unsplash.com/photos/random/?client_id=PrLMkK1NrtTB3Z3Q_M6pARgX7z2uarq9-wEWsn_YboM")
+                .then(response => response.json());
+        }
+
+        function drowPage(srcImg, authorImg) {  // функция отрисовки страницы 
+
+            const img = document.createElement("img");
+            img.className = "img";
+            img.src = srcImg;
+            block.append(img);
+
+            const author = document.createElement("h2");
+            author.className = "author";
+            author.textContent = `Photographer: ${authorImg}`;
+            block.after(author);
+        }
+
+        getData()
+            .then(data => {  // отрисовка страницы после получения данных
+                drowPage(data.urls.small, data.user.name);
+
+                const currentHistoryList = JSON.parse(localStorage.getItem("likePhotoHistory"));
+                currentHistoryList.push({ srcImg: data.urls.small, authorName: data.user.name, date: new Date });
+                localStorage.setItem("likePhotoHistory", JSON.stringify(currentHistoryList));
+            })
+            .catch(error => {
+                console.log(error);
+                drowPage("https://www.zastavki.com/pictures/2560x1600/2011/Animals_Beasts_Sight_of_a_leopard_027044_.jpg", "Сервер не отвечает. Пусть вас пока порадует этот котик");
+            })
+
+        const like = document.querySelector(".block_like");
+        like.addEventListener("click", () => {      // реализация для одного пользователя: он выбирает понравившиеся фото дня
+            if (!isLiked) {
+                const notLike = document.querySelector(".not_like");
+                notLike.style.display = "none";
+
+                const like = document.querySelector(".like");
+                like.style.display = "inline";
+
+                localStorage.setItem("likeCounter", Number(localStorage.getItem("likeCounter")) + 1);
+            }
+            else {
+                const notLike = document.querySelector(".not_like");
+                notLike.style.display = "inline";
+
+                const like = document.querySelector(".like");
+                like.style.display = "none";
+
+                localStorage.setItem("likeCounter", Number(localStorage.getItem("likeCounter")) - 1);
+            }
+            isLiked = !isLiked;
+        })
+
+        const history = document.querySelector(".history");
+        history.addEventListener("click", () => {
+            const historyImgList = JSON.parse(localStorage.getItem("likePhotoHistory"));
+            historyImgList.reverse().forEach(item => {
+                const previousPhoto = document.createElement("p");
+                previousPhoto.textContent = `Photo of photografer ${item.authorName}       day ${item.date}`;
+                previousPhoto.className = "history-item";
+                history.append(previousPhoto);
+
+                previousPhoto.addEventListener("click", () => {
+                    const img = document.querySelector(".img");
+                    img.setAttribute('src', item.srcImg);
+
+                    const author = document.querySelector(".author");
+                    author.textContent = item.authorName;
+                })
+            });
+
+        })
     </script>
 
 </body>
