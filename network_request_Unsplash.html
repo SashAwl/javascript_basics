@@ -35,34 +35,92 @@
             object-fit: contain;
         }
 
-        .block_like {
+        .block_likes {
             position: absolute;
             right: 10px;
-            top: 20px;
+            bottom: 8px;
+            height: fit-content;
+        }
+
+        .block_like-hand {
+            position: absolute;
+            left: 10px;
+            bottom: 8px;
         }
 
         .like {
             display: none;
-            width: 30px;
         }
 
         .like path {
             fill: #F44336;
         }
 
-        .not_like {
+        .not_like,
+        .like {
             width: 30px;
+            height: auto;
+            filter: drop-shadow(0 0 5px white);
         }
 
-        .history {
+        .not_like:hover {
+            filter: drop-shadow(0 0 10px red);
+        }
+
+        .not_like:hover path {
+            fill: red;
+        }
+
+        .history-head {
             text-decoration: none;
             color: black;
-            width: 70%;
-            text-align: center;
+            font-style: italic;
+            font-size: medium;
+            margin-right: 20px;
         }
 
         .history-item {
             text-align: left;
+        }
+
+        .like-counter {
+            position: absolute;
+            right: 21px;
+            bottom: 22px;
+            color: black;
+            filter: drop-shadow(0 0 3px white);
+        }
+
+        .history-filter {
+            width: 70%;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .filter {
+            position: relative;
+            padding: 10px;
+        }
+
+        .filter[open] {
+            border: 1px solid rgb(223, 216, 216);
+            border-radius: 10px;
+            height: fit-content;
+            width: 126px;
+        }
+
+        .filter summary {
+            position: absolute;
+            right: 55px;
+            top: 0;
+            display: flex;
+        }
+
+        .filter ul {
+            list-style-type: none;
+            margin-top: 30px;
+            padding: 0;
         }
     </style>
 </head>
@@ -71,7 +129,7 @@
     <div class="block">
         <div class="img-data">
             <div class="block_img">
-                <div class="block_like">
+                <div class="block_likes">
                     <?xml version="1.0" encoding="UTF-8"?>
                     <svg class="not_like" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="512"
                         height="512">
@@ -87,22 +145,53 @@
                             d="M17.5.917a6.4,6.4,0,0,0-5.5,3.3A6.4,6.4,0,0,0,6.5.917,6.8,6.8,0,0,0,0,7.967c0,6.775,10.956,14.6,11.422,14.932l.578.409.578-.409C13.044,22.569,24,14.742,24,7.967A6.8,6.8,0,0,0,17.5.917Z" />
                     </svg>
                 </div>
+                <p class="like-counter">
+                </p>
+                <div class="block_like-hand">
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg class="not_like" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
+                        width="512" height="512">
+                        <path
+                            d="M22.773,7.721A4.994,4.994,0,0,0,19,6H15.011l.336-2.041A3.037,3.037,0,0,0,9.626,2.122L7.712,6H5a5.006,5.006,0,0,0-5,5v5a5.006,5.006,0,0,0,5,5H18.3a5.024,5.024,0,0,0,4.951-4.3l.705-5A5,5,0,0,0,22.773,7.721ZM2,16V11A3,3,0,0,1,5,8H7V19H5A3,3,0,0,1,2,16Zm19.971-4.581-.706,5A3.012,3.012,0,0,1,18.3,19H9V7.734a1,1,0,0,0,.23-.292l2.189-4.435A1.07,1.07,0,0,1,13.141,2.8a1.024,1.024,0,0,1,.233.84l-.528,3.2A1,1,0,0,0,13.833,8H19a3,3,0,0,1,2.971,3.419Z" />
+                    </svg>
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg class="like" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512"
+                        height="512">
+                        <path
+                            d="M22.773,7.721A4.994,4.994,0,0,0,19,6H15.011l.336-2.041A3.037,3.037,0,0,0,9.626,2.122L8,5.417V21H18.3a5.024,5.024,0,0,0,4.951-4.3l.705-5A4.994,4.994,0,0,0,22.773,7.721Z" />
+                        <path d="M0,11v5a5.006,5.006,0,0,0,5,5H6V6H5A5.006,5.006,0,0,0,0,11Z" />
+                    </svg>
+                </div>
             </div>
         </div>
-        <a href="#" class="history">Смотреть историю</a>
+        <div class="history-filter">
+            <div class="history-base">
+                <a href="#" class="history-head">Смотреть историю</a>
+                <div class="history">
+                </div>
+            </div>
+            <details class="filter">
+                <summary>
+                    Фильтр
+                </summary>
+                <ul>
+                    <li class="liked-history-photo">Понравились</li>
+                    <li class="not-marked-photo">Не отмеченные</li>
+                    <li class="all-photo">Все</li>
+                </ul>
+            </details>
+        </div>
     </div>
 
     <script>
-        // localStorage.clear();
-        // console.log(localStorage);
-
         if (!localStorage.getItem("likeCounter")) {
-            localStorage.setItem("likeCounter", 0); // создаем счетчик понравившихся фото в LocalStorage)
+            localStorage.setItem("likeCounter", 0); // создаем счетчик понравившихся одному пользователю различных фото
         }
         if (!localStorage.getItem("likePhotoHistory")) {
             localStorage.setItem("likePhotoHistory", "[]"); // создаем историю понравившихся фото в LocalStorage)
         }
-        let isLiked = false;  // храним состояние, отмечена ли лайком данное фото
+
+        let isLiked = false;  // храним состояние, отмечено ли лайком данное фото
 
         const block = document.querySelector(".block_img");
         const imgData = document.querySelector(".img-data");
@@ -130,7 +219,7 @@
                 drowPage(data.urls.small, data.user.name);
 
                 const currentHistoryList = JSON.parse(localStorage.getItem("likePhotoHistory"));
-                currentHistoryList.push({ srcImg: data.urls.small, authorName: data.user.name, date: new Date });
+                currentHistoryList.push({ srcImg: data.urls.small, authorName: data.user.name, date: new Date, countLike: 0, isMarked: false });
                 localStorage.setItem("likePhotoHistory", JSON.stringify(currentHistoryList));
             })
             .catch(error => {
@@ -138,47 +227,128 @@
                 drowPage("https://www.zastavki.com/pictures/2560x1600/2011/Animals_Beasts_Sight_of_a_leopard_027044_.jpg", "Сервер не отвечает. Пусть вас пока порадует этот котик");
             })
 
-        const like = document.querySelector(".block_like");
-        like.addEventListener("click", () => {      // реализация для одного пользователя: он выбирает понравившиеся фото дня
+        const likeBlock = document.querySelector(".block_likes");
+        const notLike = likeBlock.querySelector(".not_like");
+        const like = likeBlock.querySelector(".like");
+        const likeCount = document.querySelector(".like-counter");
+
+        likeBlock.addEventListener("click", (e) => {      // реализация для большого количества пользователей - сколько лайков от разных пользователей собрало каждое фото
+            notLike.style.display = "none";
+            like.style.display = "inline";
+            likeCount.style.color = "red";
+
+            setTimeout(() => {
+                like.style.display = "none";
+                notLike.style.display = "inline";
+                likeCount.style.color = "black";
+            }, 300);
+
+            const selectedPhoto = e.target.parentElement.parentElement.lastChild;  // выбор фото, отмеченного лайком
+            const currentHistoryList = JSON.parse(localStorage.getItem("likePhotoHistory"));
+            currentHistoryList.forEach(item => {
+                if (item.srcImg === selectedPhoto.src) {
+                    item.countLike += 1;
+
+                    likeCount.textContent = item.countLike;
+                }
+            })
+            localStorage.setItem("likePhotoHistory", JSON.stringify(currentHistoryList));
+        })
+
+        const likeBlockHand = document.querySelector(".block_like-hand");
+        const notLikeHand = likeBlockHand.querySelector(".not_like");
+        const likeHand = likeBlockHand.querySelector(".like");
+
+        likeBlockHand.addEventListener("click", (e) => {      // реализация для одного пользователя: он выбирает понравившиеся фото дня
             if (!isLiked) {
-                const notLike = document.querySelector(".not_like");
-                notLike.style.display = "none";
+                notLikeHand.style.display = "none";
+                likeHand.style.display = "inline";
 
-                const like = document.querySelector(".like");
-                like.style.display = "inline";
-
-                localStorage.setItem("likeCounter", Number(localStorage.getItem("likeCounter")) + 1);
+                localStorage.setItem("likeCounter", Number(localStorage.getItem("likeCounter")) + 1); // учет общего количества лайков различных фото
             }
             else {
-                const notLike = document.querySelector(".not_like");
-                notLike.style.display = "inline";
-
-                const like = document.querySelector(".like");
-                like.style.display = "none";
+                notLikeHand.style.display = "inline";
+                likeHand.style.display = "none";
 
                 localStorage.setItem("likeCounter", Number(localStorage.getItem("likeCounter")) - 1);
             }
             isLiked = !isLiked;
+
+            const selectedPhoto = e.target.parentElement.parentElement.lastChild;  // выбор фото, отмеченного лайком
+            const currentHistoryList = JSON.parse(localStorage.getItem("likePhotoHistory"));
+            currentHistoryList.forEach(item => {
+                if (item.srcImg === selectedPhoto.src) {
+                    item.isMarked = !item.isMarked;
+                }
+            })
+            localStorage.setItem("likePhotoHistory", JSON.stringify(currentHistoryList));
         })
 
+        const historyHead = document.querySelector(".history-head");
         const history = document.querySelector(".history");
-        history.addEventListener("click", () => {
+
+        function createHistoryPhoto(photo) {        // отрисовка истории
+            const previousPhoto = document.createElement("p");
+            previousPhoto.textContent = `Photo of photografer ${photo.authorName}       day ${photo.date}`;
+            previousPhoto.className = "history-item";
+            history.append(previousPhoto);
+
+            previousPhoto.addEventListener("click", (event) => {  // по клику заменить текущие фото и автора на данные из истории
+                event.stopPropagation();
+                const img = document.querySelector(".img");
+                img.setAttribute('src', photo.srcImg);
+
+                const author = document.querySelector(".author");
+                author.textContent = photo.authorName;
+
+                if (photo.countLike > 0) {
+                    likeCount.textContent = photo.countLike;
+                }
+
+                if (photo.isMarked) {
+                    notLikeHand.style.display = "none";
+                    likeHand.style.display = "inline";
+                }
+                else {
+                    notLikeHand.style.display = "inline";
+                    likeHand.style.display = "none";
+                }
+            })
+        }
+        historyHead.addEventListener("click", () => {
+            const historyImgList = JSON.parse(localStorage.getItem("likePhotoHistory"));
+            historyImgList.reverse().forEach(item => {      // отстраивание списка истории
+                createHistoryPhoto(item);
+            })
+        })
+
+        const likedPhoto = document.querySelector(".liked-history-photo");
+        likedPhoto.addEventListener("click", () => {
+            const currentHistoryList = JSON.parse(localStorage.getItem("likePhotoHistory"));
+            const filerLikedList = currentHistoryList.filter(item => item.isMarked);
+            history.innerHTML = "";
+            filerLikedList.forEach(item => {
+                createHistoryPhoto(item);
+            })
+        })
+
+        const notMarkedPhoto = document.querySelector(".not-marked-photo");
+        notMarkedPhoto.addEventListener("click", () => {
+            const currentHistoryList = JSON.parse(localStorage.getItem("likePhotoHistory"));
+            const filterLikedList = currentHistoryList.filter(item => !item.isMarked);
+            console.log(filterLikedList)
+            history.innerHTML = "";
+            filterLikedList.forEach(item => {
+                createHistoryPhoto(item);
+            })
+        })
+
+        const allPhoto = document.querySelector(".all-photo");
+        allPhoto.addEventListener("click", () => {
             const historyImgList = JSON.parse(localStorage.getItem("likePhotoHistory"));
             historyImgList.reverse().forEach(item => {
-                const previousPhoto = document.createElement("p");
-                previousPhoto.textContent = `Photo of photografer ${item.authorName}       day ${item.date}`;
-                previousPhoto.className = "history-item";
-                history.append(previousPhoto);
-
-                previousPhoto.addEventListener("click", () => {
-                    const img = document.querySelector(".img");
-                    img.setAttribute('src', item.srcImg);
-
-                    const author = document.querySelector(".author");
-                    author.textContent = item.authorName;
-                })
-            });
-
+                createHistoryPhoto(item);
+            })
         })
     </script>
 
