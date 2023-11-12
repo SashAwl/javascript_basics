@@ -122,6 +122,16 @@
             margin-top: 30px;
             padding: 0;
         }
+
+        .filter li {
+            padding: 5px;
+        }
+
+        .filter li:hover {
+            background-color: rgb(230, 227, 227);
+            padding: 5px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 
@@ -323,7 +333,10 @@
         })
 
         const likedPhoto = document.querySelector(".liked-history-photo");
-        likedPhoto.addEventListener("click", () => {
+        likedPhoto.addEventListener("click", (event) => {
+            [...event.target.parentElement.children].forEach(li => li.style.backgroundColor = "white")
+            event.target.style.backgroundColor = "rgb(230, 227, 227)";
+
             const currentHistoryList = JSON.parse(localStorage.getItem("likePhotoHistory"));
             const filerLikedList = currentHistoryList.filter(item => item.isMarked);
             history.innerHTML = "";
@@ -333,7 +346,10 @@
         })
 
         const notMarkedPhoto = document.querySelector(".not-marked-photo");
-        notMarkedPhoto.addEventListener("click", () => {
+        notMarkedPhoto.addEventListener("click", (event) => {
+            [...event.target.parentElement.children].forEach(li => li.style.backgroundColor = "white")
+            event.target.style.backgroundColor = "rgb(230, 227, 227)";
+
             const currentHistoryList = JSON.parse(localStorage.getItem("likePhotoHistory"));
             const filterLikedList = currentHistoryList.filter(item => !item.isMarked);
             console.log(filterLikedList)
@@ -344,7 +360,10 @@
         })
 
         const allPhoto = document.querySelector(".all-photo");
-        allPhoto.addEventListener("click", () => {
+        allPhoto.addEventListener("click", (event) => {
+            [...event.target.parentElement.children].forEach(li => li.style.backgroundColor = "white")
+            event.target.style.backgroundColor = "rgb(230, 227, 227)";
+
             const historyImgList = JSON.parse(localStorage.getItem("likePhotoHistory"));
             historyImgList.reverse().forEach(item => {
                 createHistoryPhoto(item);
